@@ -1,5 +1,6 @@
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.model.InstanceType;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
@@ -11,9 +12,9 @@ public class MainClass {
         AmazonElasticMapReduce mapReduce = new AmazonElasticMapReduceClient(credentialsProvider);
 
         HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
-                .withJar("s3n://yoavkei/yourfile.jar") // This should be a full map reduce application.
-                .withMainClass("some.pack.MainClass")
-                .withArgs("-input","s3n://yourbucket/input/","-output", "s3n://yourbucket/output/","-mapper","<mapper>","-reducer","<reducer>");
+                .withJar("s3://dsps-assignment2/job-flow-step.jar") // This should be a full map reduce application.
+                .withArgs("-input", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/1gram/data",
+                        "-output", "s3://dsps-assignment2/output/");
 
         StepConfig stepConfig = new StepConfig()
                 .withName("stepname")
@@ -24,15 +25,17 @@ public class MainClass {
                 .withInstanceCount(2)
                 .withMasterInstanceType(InstanceType.M1Small.toString())
                 .withSlaveInstanceType(InstanceType.M1Small.toString())
-                .withHadoopVersion("2.6.0").withEc2KeyName("yourkey")
+                .withHadoopVersion("3.2.1").withEc2KeyName("my_key3")
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));
 
         RunJobFlowRequest runFlowRequest = new RunJobFlowRequest()
-                .withName("jobname")
+                .withName("wordcount")
                 .withInstances(instances)
                 .withSteps(stepConfig)
-                .withLogUri("s3n://yourbucket/logs/");
+                .withLogUri("s3://dsps-assignment2/logs/");
+        runFlowRequest.setServiceRole("EMR_DefaultRole");
+        runFlowRequest.setJobFlowRole("wordcount");// change this
 
         RunJobFlowResult runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);
         String jobFlowId = runJobFlowResult.getJobFlowId();
