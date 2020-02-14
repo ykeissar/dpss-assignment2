@@ -11,7 +11,7 @@ public class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
     private Text word = new Text();
 
     @Override
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+    public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
         StringTokenizer itr = new StringTokenizer(value.toString());
         while (itr.hasMoreTokens()) {
             word.set(itr.nextToken());
