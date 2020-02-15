@@ -24,7 +24,7 @@ public class MainClass {
                 .withInstanceCount(2)
                 .withMasterInstanceType(InstanceType.M5Xlarge.toString())
                 .withSlaveInstanceType(InstanceType.M5Xlarge.toString())
-                .withHadoopVersion("2.6.0").withEc2KeyName("my_key3")
+                .withHadoopVersion("2.8.5").withEc2KeyName("my_key3")
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));
 
@@ -32,10 +32,10 @@ public class MainClass {
                 .withName("wordcount4")
                 .withInstances(instances)
                 .withSteps(stepConfig)
+                .withReleaseLabel("emr-5.29.0")
                 .withLogUri("s3://dsps-assignment2/logs/");
         runFlowRequest.setServiceRole("EMR_DefaultRole");
         runFlowRequest.setJobFlowRole("EMR_EC2_DefaultRole");
-        runFlowRequest.setAmiVersion("5.28.1");
 
         RunJobFlowResult runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);
         String jobFlowId = runJobFlowResult.getJobFlowId();
