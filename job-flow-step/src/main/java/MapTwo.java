@@ -12,11 +12,10 @@ public class MapTwo extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        StringTokenizer itr = new StringTokenizer(value.toString());
-        while (itr.hasMoreTokens()) {
-            String[] splits = itr.nextToken().split("\t");
+        String[] splits = value.toString().split("\t");
+        if (splits.length >= 3) {
             word.set(splits[0]);
-            occurrences.set("*_"+splits[2]);
+            occurrences.set("*_" + splits[2]);
             context.write(word, occurrences);
         }
     }
