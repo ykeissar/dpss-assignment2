@@ -27,25 +27,25 @@ public class MapThree extends Mapper<LongWritable, Text, Text, Text> {
                 w12.set(splitsTriple[0] + " " + splitsTriple[1]);
                 w123.set(splits[0]);
 
-                String id = splitsTriple[0]+"-"+splitsTriple[1]+"-"+splitsTriple[2];
+                String triple = splitsTriple[0] + "-" + splitsTriple[1] + "-" + splitsTriple[2];
 
-                toReturn.set(id + "_" + 2);
+                toReturn.set(triple + "_" + 2);
                 context.write(w2, toReturn);
 
-                toReturn.set(id + "_" + 3);
+                toReturn.set(triple + "_" + 3);
                 context.write(w3, toReturn);
 
-                toReturn.set(id + "_" + 12);
+                toReturn.set(triple + "_" + 12);
                 context.write(w12, toReturn);
 
-                toReturn.set(id + "_" + 23);
+                toReturn.set(triple + "_" + 23);
                 context.write(w23, toReturn);
 
-                toReturn.set(id + "_" + 123);
+                toReturn.set(triple + "_" + 123);
                 context.write(w123, toReturn);
 
-                toReturn.set(id);
-                context.write(hash, toReturn);
+//                toReturn.set(id);
+//                context.write(hash, toReturn);
 
                 toReturn.set("*_" + splits[2]);
                 context.write(w123, toReturn);

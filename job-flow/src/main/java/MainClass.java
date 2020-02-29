@@ -11,7 +11,7 @@ public class MainClass {
         AmazonElasticMapReduce mapReduce = new AmazonElasticMapReduceClient(credentialsProvider);
 
         HadoopJarStepConfig hadoopFirstJarStep = new HadoopJarStepConfig()
-                .withJar("s3://dsps-assignment2/job-flow-step.jar\n") // This should be a full map reduce application.
+                .withJar("s3://dsps-assignment2/job-flow-step.jar\n")
                 .withArgs("-input", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/1gram/data", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/2gram/data", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/3gram/data",
                         "-output", "s3://dsps-assignment2/output/");
 
@@ -21,8 +21,8 @@ public class MainClass {
                 .withActionOnFailure("TERMINATE_JOB_FLOW");
 
         HadoopJarStepConfig hadoopSecondJarStep = new HadoopJarStepConfig()
-                .withJar("s3://dsps-assignment2/job-flow-step-two.jar\n") // This should be a full map reduce application.
-                .withArgs("-input", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/1gram/",
+                .withJar("s3://dsps-assignment2/job-flow-step-two.jar\n")
+                .withArgs("-input", "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/1gram/",//
                         "-output", "s3://dsps-assignment2/output/");
 
         StepConfig secondStepConfig = new StepConfig()
@@ -32,7 +32,7 @@ public class MainClass {
 
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
-                .withInstanceCount(2)
+                .withInstanceCount(3)
                 .withMasterInstanceType(InstanceType.M5Xlarge.toString())
                 .withSlaveInstanceType(InstanceType.M5Xlarge.toString())
                 .withHadoopVersion("2.8.5").withEc2KeyName("my_key3")
@@ -48,7 +48,7 @@ public class MainClass {
         runFlowRequest.setServiceRole("EMR_DefaultRole");
         runFlowRequest.setJobFlowRole("EMR_EC2_DefaultRole");
 
-        RunJobFlowResult runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);
+        mapReduce.runJobFlow(runFlowRequest);
 
         runFlowRequest = new RunJobFlowRequest()
                 .withName("mapreducetwo")
@@ -59,10 +59,10 @@ public class MainClass {
         runFlowRequest.setServiceRole("EMR_DefaultRole");
         runFlowRequest.setJobFlowRole("EMR_EC2_DefaultRole");
 
-        runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);
+        mapReduce.runJobFlow(runFlowRequest);
 
 
-        String jobFlowId = runJobFlowResult.getJobFlowId();
-        System.out.println("Ran job flow with id: " + jobFlowId);
+        //String jobFlowId = runJobFlowResult.getJobFlowId();
+        //System.out.println("Ran job flow with id: " + jobFlowId);
     }
 }
