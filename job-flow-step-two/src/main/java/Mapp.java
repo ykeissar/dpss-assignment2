@@ -15,36 +15,26 @@ public class Mapp extends Mapper<LongWritable, Text, Text, Text> {
             String strKey = splits[0];
             String occurrences = "";
 
-            if (!strKey.equals("#")) {
-                String[] splitValue = splits[1].split(" ");
-                if (splitValue.length > 0) {
+            String[] splitValue = splits[1].split(" ");
+            if (splitValue.length > 0) {
 
-                    occurrences = splitValue[0];
-                    for (int i = 1; i < splitValue.length; i++) {
-                        String[] split2 = splitValue[i].split("_");
-                        if (split2.length > 1) {
+                occurrences = splitValue[0];
+                for (int i = 1; i < splitValue.length; i++) {
+                    String[] split2 = splitValue[i].split("_##_");
+                    if (split2.length > 1) {
 
-                            tripleKey.set(split2[0]);
-                            if (split2[1].equals("123")) {
-                                tripleValue.set(split2[1] + "@" + strKey + "_" + occurrences);
-                                context.write(tripleKey, tripleValue);
-                            } else {
-                                tripleValue.set(split2[1] + "_" + occurrences);
-                                context.write(tripleKey, tripleValue);
-                            }
+                        tripleKey.set(split2[0]);
+                        if (split2[1].equals("123")) {
+                            tripleValue.set(split2[1] + "@" + strKey + "_##_" + occurrences);
+                            context.write(tripleKey, tripleValue);
+                        } else {
+                            tripleValue.set(split2[1] + "_##_" + occurrences);
+                            context.write(tripleKey, tripleValue);
                         }
                     }
                 }
-            } else {
-                String[] splitValue = splits[1].split(" ");
-                if (splitValue.length > 0) {
-                    tripleValue.set("0_" + splitValue[0]); //occurrences
-                    for (int i = 1; i < splitValue.length; i++) {
-                        tripleKey.set(splitValue[i]);
-                        context.write(tripleKey, tripleValue);
-                    }
-                }
             }
+
         }
     }
 }

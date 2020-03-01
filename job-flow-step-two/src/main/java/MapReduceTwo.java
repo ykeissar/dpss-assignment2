@@ -28,7 +28,7 @@ public class MapReduceTwo {
         job.setOutputValueClass(DoubleWritable.class);
 
         job.setReducerClass(Reducee.class);
-
+        job.setNumReduceTasks(1);
         job.setOutputFormatClass(TextOutputFormat.class);
 
         for (int i = 0; i < args.length - 1; i++)
