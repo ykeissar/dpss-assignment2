@@ -1,6 +1,9 @@
 # assignment2
 The projram runs the next three steps one by one.
 
+Names: Amit Haim 312463904, Yoav Keissar 308576032
+AWS Username: amir_yoav
+
 How to run:
 	Pre conditions:
 		1) Setup aws credentials file.
@@ -205,6 +208,8 @@ Analysis:
 		מערכת הבחירות לקונגרס	0.012716805824329425
 		מערכת הבחירות שלו	0.01235414724711725
 		After "מערכת הבחירות" the system will suggeste the word "של", which is a proposition, and the next suggested word is "לכנסת" which makes prefect sense.	
+
+Output Location: s3://dsps-assignment2/second-output/final_output
 
 
 
